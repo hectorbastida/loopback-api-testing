@@ -12,14 +12,15 @@ module.exports = {
     if (typeof conf !== 'object') {
       return callback('Failed to load test configuration from file');
     }
+    if(app){
+      before(function(done) {
+        server = app.listen(done);
+      });
 
-    before(function(done) {
-      server = app.listen(done);
-    });
-
-    after(function(done) {
-      server.close(done);
-    });
+      after(function(done) {
+        server.close(done);
+      });
+    }
 
     describe('Loopback API', function() {
       async.each(conf, function(c, asyncCallback) {
